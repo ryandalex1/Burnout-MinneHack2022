@@ -36,10 +36,18 @@ export class ConversationsPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  sendMessageOnEnter(event: Event): void {
-    if ((event as KeyboardEvent)?.key === "Enter") {
-      this.sendMessage()
+  sendMessageOnEnter(event: Event): boolean {
+    const ke: KeyboardEvent = event as KeyboardEvent;
+    if (ke.key === "Enter") {
+      if (ke.shiftKey) {
+        return true;
+      } else {
+        ke.preventDefault();
+        this.sendMessage();
+        return false;
+      }
     }
+    return true;
   }
 
   sendMessage(): void {

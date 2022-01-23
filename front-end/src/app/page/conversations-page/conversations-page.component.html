@@ -8,9 +8,9 @@
       </ng-container>
     </div>
     <div class="textbox-area">
-      <mat-form-field appearance="fill">
-        <mat-label>Message</mat-label>
-        <input type="text" [(ngModel)]="messageToSend" matInput rows="20" (keypress)="sendMessageOnEnter($event)">
+      <mat-form-field appearance="fill" floatLabel="never">
+        <textarea [(ngModel)]="messageToSend" matInput rows="1" (keypress)="sendMessageOnEnter($event)"></textarea>
+        <mat-label></mat-label>
       </mat-form-field>
       <button mat-icon-button aria-label="Send" (click)="sendMessage()">
         <mat-icon>send</mat-icon>
@@ -21,7 +21,7 @@
   <ng-template #msgTemplate let-message='message'>
     <div class="card-wrapper">
       <div class="side-padding" *ngIf="message.from == 'US'"></div>
-      <mat-card>
+      <mat-card class="message-contents">
         {{message.contents}}
       </mat-card>
       <div class="side-padding" *ngIf="message.from == 'THEM'"></div>
