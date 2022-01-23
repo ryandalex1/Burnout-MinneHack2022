@@ -3,12 +3,22 @@
     <div class="code-enter-container">
       <mat-form-field appearance="outline">
         <mat-label>Code</mat-label>
-        <input matInput>
+        <input #codeInput matInput>
       </mat-form-field>
-      <button mat-raised-button color="primary">Enter Code</button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="enterCode(codeInput.value)">
+        Enter Code
+      </button>
     </div>
     <span>OR</span>
     <br/>
-    <button mat-raised-button color="primary">Create a New Session</button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="createNewSession()">
+      Create a New Session
+    </button>
   </div>
 </div>
