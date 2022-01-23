@@ -1,8 +1,7 @@
 <mat-sidenav-container class="page-container">
   <mat-sidenav #sidenav mode="over">
     <mat-toolbar color="accent">
-      <span style="width: 250px"></span>
-      <button mat-mini-fab color="primary" (click)="sidenav.toggle()">
+      <button class="back-button" mat-mini-fab color="primary" (click)="sidenav.toggle()">
         <mat-icon>arrow_back</mat-icon>
       </button>
     </mat-toolbar>
@@ -14,7 +13,9 @@
 
     <h2>Your Messages:</h2>
 
-    <p>msgs here</p>
+    <app-contact></app-contact>
+    <app-contact></app-contact>
+    <app-contact></app-contact>
 
   </mat-sidenav>
   <mat-sidenav-content>

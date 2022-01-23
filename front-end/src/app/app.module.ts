@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import {SidebarComponent} from "./component/sidebar/sidebar.component";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import { ContactComponent } from './component/contact/contact.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {MatToolbarModule} from "@angular/material/toolbar";
     AppComponent,
     ConversationsPageComponent,
     LoginPageComponent,
-    SidebarComponent
+    SidebarComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
