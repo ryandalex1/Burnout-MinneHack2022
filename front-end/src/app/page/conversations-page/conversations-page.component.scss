@@ -13,7 +13,14 @@
 }
 
 .textbox {
+    width: 100%;
+}
+
+.textbox-area {
     margin-top: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .messages {
