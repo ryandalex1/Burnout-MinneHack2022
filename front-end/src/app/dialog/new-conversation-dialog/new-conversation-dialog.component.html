@@ -1,0 +1,9 @@
+<mat-dialog-content>
+  <div class="container">
+    <mat-form-field appearance="outline">
+      <mat-label>Code</mat-label>
+      <input #input matInput>
+    </mat-form-field>
+    <button mat-flat-button color="primary" (click)="closeDialog(input.value)">Create</button>
+  </div>
+</mat-dialog-content>

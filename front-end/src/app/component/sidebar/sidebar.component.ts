@@ -3,6 +3,7 @@ import { MediaChange, MediaObserver} from '@angular/flex-layout';
 import {Subscription} from "rxjs";
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {CloseBurnerDialogComponent} from "../../dialog/close-burner-dialog/close-burner-dialog.component";
+import {NewConversationDialogComponent} from "../../dialog/new-conversation-dialog/new-conversation-dialog.component";
 
 @Component({
   selector: 'app-sidebar',
@@ -28,8 +29,15 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  openDialog() {
+  closeBurnerDialog() {
     this.dialog.open(CloseBurnerDialogComponent);
+  }
+
+  newConvDialog() {
+    this.dialog.open(NewConversationDialogComponent).afterClosed().subscribe(phoneNum => {
+      // TODO: actually do stuff with phone number
+      console.log(phoneNum);
+    });
   }
 
   ngOnInit(): void {}
