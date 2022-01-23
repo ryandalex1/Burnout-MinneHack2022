@@ -1,3 +1,6 @@
 fastapi
 uvicorn
 sqlalchemy
+twilio
+python-multipart
+websockets
