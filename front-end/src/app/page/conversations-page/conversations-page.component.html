@@ -22,10 +22,10 @@
 
 <ng-template #msgTemplate let-message='message'>
   <div class="card-wrapper">
-    <div class="side-padding" *ngIf="message.from == 'US'"></div>
+    <div class="side-padding" *ngIf="message.writtenBy == 'US'"></div>
     <mat-card class="message-contents">
-      {{message.contents}}
+      {{message.content}}
     </mat-card>
-    <div class="side-padding" *ngIf="message.from == 'THEM'"></div>
+    <div class="side-padding" *ngIf="message.writtenBy == 'THEM'"></div>
   </div>
 </ng-template>

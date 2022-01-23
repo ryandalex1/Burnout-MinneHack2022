@@ -13,7 +13,9 @@ export interface CodeDetails {
 }
 
 export interface BackendMessage {
-  _todo: unknown // TODO: flesh this out once it is known
+  sent_from: string
+  sent_to: string
+  message_text: string
 }
 
 @Injectable({
@@ -26,31 +28,33 @@ export class BackendService {
   public async getNewCode(): Promise<CodeDetails> {
     interface CreateSessionResponse {
       access_code: string
-      next_number: string
+      assigned_phone_number: string
       valid_until_time: number
     }
 
     const res = await firstValueFrom(this.http.post<CreateSessionResponse>(`${apiUrl}/create-session/`, {}));
     return {
       accessCode: res.access_code,
-      nextNumber: res.next_number,
+      nextNumber: res.assigned_phone_number,
       validUntil: new Date(res.valid_until_time * 1000)
     }
   }
 
   public async useExistingCode(existingCode: string): Promise<CodeDetails & { messages: BackendMessage[] }> {
     interface ExistingSessionResponse {
-      access_code: string
-      next_number: string
-      valid_until_time: number
+      session: {
+        access_code: string,
+        assigned_phone_number: string,
+        valid_until_time: number
+      }
       messages: BackendMessage[]
     }
 
     const res = await firstValueFrom(this.http.get<ExistingSessionResponse>(`${apiUrl}/${existingCode}/`));
     return {
-      accessCode: existingCode,
-      nextNumber: res.next_number,
-      validUntil: new Date(res.valid_until_time * 1000),
+      accessCode: res.session.access_code,
+      nextNumber: res.session.assigned_phone_number,
+      validUntil: new Date(res.session.valid_until_time * 1000),
       messages: res.messages
     }
   }
@@ -61,7 +65,7 @@ export class BackendService {
 
   public connectToWebsocketWithCode(code: string): WebSocketSubject<BackendMessage> {
     return webSocket({
-      url: `${apiUrl}/ws/${code}/` // TODO: this should be updated once ryan fleshes this out
+      url: `${apiUrl.replace('http', 'ws')}/ws/${code}`
     })
   }
 }

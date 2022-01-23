@@ -6,7 +6,7 @@ class MessageBase(BaseModel):
     sent_from: str
     sent_to: str
     message_text: str
-
+    # TODO: timestamp
 
 class MessageCreate(MessageBase):
     pass

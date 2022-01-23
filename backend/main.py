@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Form, Request, HTTPException, WebSocket, Depends, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from twilio.request_validator import RequestValidator
 from twilio.rest import Client
@@ -56,12 +57,22 @@ html = """
 </html>
 """
 
+origins = [ "*" ]
+
 # TODO use alembic maybe idk
 models.Base.metadata.create_all(bind=engine)
 client = Client(account_sid, auth_token)
 app = FastAPI()
 ws_manager = ConnectionManager()
 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Dependency
 def get_db():
@@ -135,9 +146,14 @@ async def websocket_endpoint(websocket: WebSocket, access_code: str, db: Session
     async def receive_text():
         try:
             while True:
-                new_text_id = await ws_manager.get_message_from_queue(access_code)
-                text_json = get_message(db, new_text_id)
-                await websocket.send_json(text_json)
+                print("waiting for the message to get onto the queue")
+                new_text: models.Message = await ws_manager.get_message_from_queue(access_code)
+                print("got the message")
+                print(new_text)
+                # text_json = get_message(db, new_text_id)
+                await websocket.send_json({"sent_from": new_text.sent_from, "sent_to": new_text.sent_to, "message_text": new_text.message_text})
+                print("sent on the websocket")
+
         except WebSocketDisconnect:
             ws_manager.disconnect(access_code)
 
@@ -145,9 +161,12 @@ async def websocket_endpoint(websocket: WebSocket, access_code: str, db: Session
         try:
             while True:
                 sent_message = await websocket.receive_json()
+                new_message = create_session_message(db=db, sent_to=sent_message["to"],
+                                                     sent_from=session.assigned_phone_number, message_text=sent_message["body"],
+                                                     session_id=session.id)
                 message = client.messages.create(
                     body=sent_message["body"],
-                    from_=session.assigned_phone_number, #sent_message["from"],
+                    from_=session.assigned_phone_number,
                     to=sent_message["to"]
                 )
         except WebSocketDisconnect:
@@ -170,7 +189,10 @@ async def chat(request: Request, From: str = Form(...), To: str = Form(...), Bod
                                          session_id=current_session.id)
 
     if current_session.access_code in ws_manager.active_connections:
-        ws_manager.gift_message(current_session.access_code, new_message.id)
+        print("sending message to ws")
+        ws_manager.gift_message(current_session.access_code, new_message)
+    else:
+        print("no active connection to send to")
 
     return
 

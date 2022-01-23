@@ -7,6 +7,7 @@ import asyncio
 import time
 
 from .schema import Session
+from .schema import Message
 
 ACCESS_CODE_LENGTH = 6
 
@@ -32,8 +33,10 @@ class ConnectionManager:
         except KeyError:
             pass
 
-    def gift_message(self, access_code: str, message_id: int):
-        self.live_message_queues[access_code].put_nowait(message_id)
+    def gift_message(self, access_code: str, message: Message):
+        print(f"gifting to {access_code}")
+        self.live_message_queues[access_code].put_nowait(message)
+        print(self.live_message_queues[access_code].qsize())
 
     async def get_message_from_queue(self, access_code: str):
         return await self.live_message_queues[access_code].get()

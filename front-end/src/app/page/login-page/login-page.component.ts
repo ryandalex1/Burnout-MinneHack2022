@@ -17,13 +17,13 @@ export class LoginPageComponent implements OnInit {
     console.log(code);
     // TODO: error handling
     await this.conversations.useExistingCode(code);
-    this.router.navigate(['chat']);
+    await this.router.navigate(['chat']);
   }
 
-  createNewSession() {
+  async createNewSession() {
     console.log("New Session");
     // TODO: error handling
     await this.conversations.getNewPhoneNum();
-    this.router.navigate(['chat']);
+    await this.router.navigate(['chat']);
   }
 }
