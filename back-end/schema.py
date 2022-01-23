@@ -23,6 +23,7 @@ class Message(MessageBase):
 class SessionBase(BaseModel):
     assigned_phone_number: str
     valid_until_time: float
+    access_code: str
 
 
 class SessionCreate(SessionBase):

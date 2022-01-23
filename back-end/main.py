@@ -20,7 +20,7 @@ ACCESS_CODE_LENGTH = 6
 account_sid = "sid"
 auth_token = "token"
 
-all_phone_numbers = ["6204729736", "9525229522", "6124533184", "6514101883", "8055905233"]
+all_phone_numbers = ["+16204729736", "+19525229522", "+16124533184", "+16514101883", "+18055905233"]
 available_phone_numbers = []
 
 incoming_message_queue = asyncio.Queue()
@@ -86,7 +86,10 @@ async def startup_event():
         available_phone_numbers.append(number)
 
 
-# TODO clear all sessions when app ends
+@app.on_event("shutdown")
+async def shutdown_event():
+    # TODO clear all sessions from db when app ends
+    pass
 
 
 @app.get("/")
@@ -101,26 +104,28 @@ async def create_message_session(db: Session = Depends(get_db)):
     next_code = create_code()
     next_number = available_phone_numbers.pop()
     current_time = time.time() + (60 * SESSION_LENGTH_MINUTES)
-    access_codes[next_code] = (next_number, current_time)
     return crud_operations.create_session(db=db, access_code=next_code, phone_number=next_number,
                                           valid_until_time=current_time)
 
-# TODO return all messages stored in db and actual session attributes
+
 @app.get("/{user_id}")
-async def show_message_interface(user_id: str):
-    if user_id not in access_codes.keys():
-        raise HTTPException(status_code=404, detail="Access code not found")
-    return {"phone_number": access_codes[user_id][0], "valid_until_time": access_codes[user_id][1]}
+async def show_message_interface(user_id: str, db: Session = Depends(get_db)):
+    user_session = crud_operations.get_session(db=db, access_code=user_id)
+    if user_session is None:
+        raise HTTPException(status_code=404, detail="Session not found")
+    session_messages = crud_operations.get_messages(db=db, session_id=user_session.id)
+    return {"session": user_session, "messages": session_messages}
 
 
-# TODO delete from db
+# TODO test that this works
 @app.delete("/end/")
-async def delete_session(user_id: str):
-    if user_id not in access_codes.keys():
-        raise HTTPException(status_code=404, detail="Access code does not exist")
-    freed_phone_number = access_codes[user_id][0]
+async def delete_session(access_code: str, db: Session = Depends(get_db)):
+    user_session = crud_operations.get_session(db=db, access_code=access_code)
+    if user_session is None:
+        raise HTTPException(status_code=404, detail="Session not found")
+    freed_phone_number = user_session.assigned_phone_number
     available_phone_numbers.append(freed_phone_number)
-    del access_codes[user_id]
+    crud_operations.delete_session(db, access_code)
     return
 
 
@@ -162,22 +167,9 @@ async def websocket_endpoint(websocket: WebSocket, db: Session = Depends(get_db)
 async def chat(request: Request, From: str = Form(...), To: str = Form(...), Body: str = Form(...), db: Session = Depends(get_db)):
     validator = RequestValidator(auth_token)
     form_ = await request.form()
-    #if not validator.validate(
-            #str(request.url),
-            #form_,
-            #request.headers.get("X-Twilio-Signature", "")):
-        #raise HTTPException(status_code=400, detail="Error in Twilio Signature")
-
-    #response = MessagingResponse()
-    crud_operations.create_session_message(db=db,
-                                           sent_to=To,
-                                           sent_from=From,
-                                           message_text=Body,
-                                           session_id=crud_operations.get_session_by_phone_num(db=db,
-                                                                                               phone_number=To))
-
+    current_session_id = crud_operations.get_session_by_phone_num(db=db, phone_number=To)
+    new_message = crud_operations.create_session_message(db=db, sent_to=To, sent_from=From, message_text=Body,
+                                                         session_id=current_session_id.id)
+    # TODO put to right queue
     incoming_message_queue.put_nowait((From, Body, To))
-    print("in quque?")
-    #msg = response.message(f"Hi {From}, you said: {Body}")
-    #return Response(content=str(response), media_type="application/xml")
     return

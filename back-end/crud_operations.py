@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
 
-from . import models, schema
+from . import models
 
 
-def get_session(db: Session, session_id: int):
-    return db.query(models.Session).filter(models.Session.id == session_id).first()
+def get_session(db: Session, access_code: str):
+    return db.query(models.Session).filter(models.Session.access_code == access_code).first()
 
 
 def get_session_by_phone_num(db: Session, phone_number: str):
@@ -20,9 +20,14 @@ def create_session(db: Session, access_code: str, phone_number: str, valid_until
     return db_session
 
 
-def get_messages(db: Session, session_id: int, phone_number: int):
-    return db.query(models.Message).filter(models.Session.id == session_id)\
-                                   .filter(models.Session.assigned_phone_number == phone_number).all()
+def delete_session(db: Session, access_code: str):
+    session_to_delete = get_session(db, access_code)
+    db.delete(session_to_delete)
+    db.flush()
+
+
+def get_messages(db: Session, session_id: int):
+    return db.query(models.Message).filter(models.Message.owner_id == session_id).all()
 
 
 def create_session_message(db: Session, sent_from: str, sent_to: str, message_text: str, session_id: int):

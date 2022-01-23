@@ -4,3 +4,4 @@ sqlalchemy
 twilio
 python-multipart
 websockets
+psycopg2

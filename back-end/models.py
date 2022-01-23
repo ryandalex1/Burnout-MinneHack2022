@@ -22,4 +22,4 @@ class Session(Base):
     access_code = Column(String, index=True)
     assigned_phone_number = Column(String, index=True)
     valid_until_time = Column(Float)
-    items = relationship("Message", back_populates="owner")
+    items = relationship("Message", back_populates="owner", cascade="all, delete")
