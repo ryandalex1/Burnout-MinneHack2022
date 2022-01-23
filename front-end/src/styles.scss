@@ -3,12 +3,11 @@
 @import '~@angular/material/theming';
 @import "~@angular/material/prebuilt-themes/purple-green.css";
 
+@import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap');
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 h1, h2, h3, h4, h5, h6, p, span {
   color: white;
 }
-
-// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
-
