@@ -26,8 +26,18 @@ def delete_session(db: Session, access_code: str):
     db.flush()
 
 
+def delete_all_sessions(db: Session):
+    for session in db.query(models.Session).all():
+        db.delete(session)
+    db.flush()
+
+
 def get_messages(db: Session, session_id: int):
     return db.query(models.Message).filter(models.Message.owner_id == session_id).all()
+
+
+def get_message(db: Session, message_id: int):
+    return db.query(models.Message).filter(models.Message.id == message_id).all()
 
 
 def create_session_message(db: Session, sent_from: str, sent_to: str, message_text: str, session_id: int):
