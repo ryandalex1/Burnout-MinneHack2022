@@ -12,6 +12,10 @@ export interface CodeDetails {
   validUntil: Date
 }
 
+export interface BackendMessage {
+  _todo: unknown // TODO: flesh this out once it is known
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -34,28 +38,30 @@ export class BackendService {
     }
   }
 
-  public async useExistingCode(existingCode: string): Promise<CodeDetails> {
+  public async useExistingCode(existingCode: string): Promise<CodeDetails & { messages: BackendMessage[] }> {
     interface ExistingSessionResponse {
       access_code: string
       next_number: string
       valid_until_time: number
+      messages: BackendMessage[]
     }
 
     const res = await firstValueFrom(this.http.get<ExistingSessionResponse>(`${apiUrl}/${existingCode}/`));
     return {
       accessCode: existingCode,
       nextNumber: res.next_number,
-      validUntil: new Date(res.valid_until_time * 1000)
+      validUntil: new Date(res.valid_until_time * 1000),
+      messages: res.messages
     }
   }
 
-  public async endSession(): Promise<void> {
-    await firstValueFrom(this.http.delete(`${apiUrl}/end/`))
+  public async endSession(user_id: string): Promise<void> {
+    await firstValueFrom(this.http.delete(`${apiUrl}/end/`, { body: { user_id } }))
   }
 
-  private connectToWebsocket(): WebSocketSubject<unknown> { // TODO: this should be known
+  public connectToWebsocketWithCode(code: string): WebSocketSubject<BackendMessage> {
     return webSocket({
-      url: `${apiUrl}/ws/` // TODO: this should be 
+      url: `${apiUrl}/ws/${code}/` // TODO: this should be updated once ryan fleshes this out
     })
   }
 }
