@@ -2,11 +2,18 @@
     <h1 class="name">(555) 555-5555</h1>
     <div class="messages">
         <ng-container *ngFor="let message of textMessages">
-            <ng-container [ngTemplateOutlet]="msgTemplate" [ngTemplateOutletContext]="{message: message}"></ng-container>
+            <ng-container [ngTemplateOutlet]="msgTemplate" [ngTemplateOutletContext]="{message: message}">
+            </ng-container>
         </ng-container>
     </div>
-    <div class="textbox">
-        <textarea name="" id="" cols="30" rows="10"></textarea>
+    <div class="textbox-area">
+        <mat-form-field appearance="fill">
+            <mat-label>Message</mat-label>
+            <input type="text" [(ngModel)]="messageToSend" matInput rows="20" (keypress)="sendMessageOnEnter($event)">
+        </mat-form-field>
+        <button mat-icon-button aria-label="Send" (click)="sendMessage()">
+            <mat-icon>send</mat-icon>
+        </button>
     </div>
 </div>
 
