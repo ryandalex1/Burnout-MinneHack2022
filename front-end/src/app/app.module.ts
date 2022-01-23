@@ -21,6 +21,7 @@ import { ContactComponent } from './component/contact/contact.component';
 import { CloseBurnerDialogComponent } from './dialog/close-burner-dialog/close-burner-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {NewConversationDialogComponent} from "./dialog/new-conversation-dialog/new-conversation-dialog.component";
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import {NewConversationDialogComponent} from "./dialog/new-conversation-dialog/n
     MatToolbarModule,
     MatRippleModule,
     MatDividerModule,
-    MatDialogModule
+    MatDialogModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

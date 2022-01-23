@@ -1,5 +1,5 @@
 <app-sidebar>
-  <h1 header class="name">(555) 555-5555</h1>
+  <h1 header class="name">{{recipient}}</h1>
   <div body class="container">
     <div class="messages">
       <ng-container *ngFor="let message of textMessages">
@@ -22,10 +22,10 @@
 
 <ng-template #msgTemplate let-message='message'>
   <div class="card-wrapper">
-    <div class="side-padding" *ngIf="message.from == 'US'"></div>
+    <div class="side-padding" *ngIf="message.writtenBy == 'US'"></div>
     <mat-card class="message-contents">
-      {{message.contents}}
+      {{message.content}}
     </mat-card>
-    <div class="side-padding" *ngIf="message.from == 'THEM'"></div>
+    <div class="side-padding" *ngIf="message.writtenBy == 'THEM'"></div>
   </div>
 </ng-template>
