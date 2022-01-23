@@ -8,9 +8,9 @@ import uvicorn
 import asyncio
 import time
 
-from .crud_operations import *
-from . import models
-from .database import SessionLocal, engine
+from backend.crud_operations import *
+from backend import models
+from backend.database import SessionLocal, engine
 
 from .util import *
 
@@ -21,8 +21,6 @@ auth_token = "token"
 
 all_phone_numbers = ["+16204729736", "+19525229522", "+16124533184", "+16514101883", "+18055905233"]
 available_phone_numbers = []
-
-live_message_queues = {}
 
 html = """
 <!DOCTYPE html>
@@ -58,6 +56,7 @@ html = """
 </html>
 """
 
+# TODO use alembic maybe idk
 models.Base.metadata.create_all(bind=engine)
 client = Client(account_sid, auth_token)
 app = FastAPI()
@@ -79,11 +78,6 @@ async def startup_event():
         available_phone_numbers.append(number)
 
 
-@app.on_event("shutdown")
-async def shutdown_event(db: Session = Depends(get_db)):
-    delete_all_sessions(db=db)
-
-
 @app.get("/")
 async def root():
     return HTMLResponse(html)
@@ -95,9 +89,21 @@ async def create_message_session(db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Phone number not found")
     next_code = create_code()
     next_number = available_phone_numbers.pop()
-    current_time = time.time() + (60 * SESSION_LENGTH_MINUTES)
-    return create_session(db=db, access_code=next_code, phone_number=next_number,
-                                          valid_until_time=current_time)
+    seconds_until_expiry = (60 * SESSION_LENGTH_MINUTES)
+    current_time = time.time() + seconds_until_expiry
+
+    ret = create_session(db=db, access_code=next_code, phone_number=next_number,
+                         valid_until_time=current_time)
+
+    async def expire_session():
+        await asyncio.sleep(seconds_until_expiry)
+        ws_manager.disconnect(next_code)
+        freed_phone_number = next_number
+        available_phone_numbers.append(freed_phone_number)
+        delete_session(db, next_code)
+    asyncio.create_task(expire_session())
+
+    return ret
 
 
 @app.get("/{user_id}")
@@ -111,29 +117,29 @@ async def show_message_interface(user_id: str, db: Session = Depends(get_db)):
 
 # TODO test that this works
 @app.delete("/end/")
-async def delete_session(access_code: str, db: Session = Depends(get_db)):
+async def delete_session_route(access_code: str, db: Session = Depends(get_db)):
     user_session = get_session(db=db, access_code=access_code)
     if user_session is None:
         raise HTTPException(status_code=404, detail="Session not found")
     freed_phone_number = user_session.assigned_phone_number
     available_phone_numbers.append(freed_phone_number)
-    await delete_session(db, access_code)
+    delete_session(db, access_code)
     return
 
 
-# TODO different websocket for each session
 @app.websocket("/ws/{access_code}")
 async def websocket_endpoint(websocket: WebSocket, access_code: str, db: Session = Depends(get_db)):
-    await ws_manager.connect(websocket)
+    session = get_session(db, access_code)
+    await ws_manager.connect(websocket, session)
 
     async def receive_text():
         try:
             while True:
-                new_text_id = await live_message_queues[access_code].get()
+                new_text_id = await ws_manager.get_message_from_queue(access_code)
                 text_json = get_message(db, new_text_id)
                 await websocket.send_json(text_json)
         except WebSocketDisconnect:
-            ws_manager.disconnect(websocket)
+            ws_manager.disconnect(access_code)
 
     async def send_text():
         try:
@@ -141,12 +147,11 @@ async def websocket_endpoint(websocket: WebSocket, access_code: str, db: Session
                 sent_message = await websocket.receive_json()
                 message = client.messages.create(
                     body=sent_message["body"],
-                    from_=sent_message["from"],
+                    from_=session.assigned_phone_number, #sent_message["from"],
                     to=sent_message["to"]
                 )
         except WebSocketDisconnect:
-            # TODO idk about this
-            pass
+            ws_manager.disconnect(access_code)
 
     receive_task = asyncio.create_task(receive_text())
     send_task = asyncio.create_task(send_text())
@@ -164,14 +169,11 @@ async def chat(request: Request, From: str = Form(...), To: str = Form(...), Bod
     new_message = create_session_message(db=db, sent_to=To, sent_from=From, message_text=Body,
                                          session_id=current_session.id)
 
-    # TODO check if connection is open in websockets
-    if current_session.access_code not in live_message_queues:
-        live_message_queues[current_session.access_code] = asyncio.Queue()
-    live_message_queues[current_session.access_code].put_nowait(new_message.id)
+    if current_session.access_code in ws_manager.active_connections:
+        ws_manager.gift_message(current_session.access_code, new_message.id)
 
     return
 
 
 if __name__ == "__main__":
-
     uvicorn.run("main:app", host="localhost", port=8000, reload=True)
