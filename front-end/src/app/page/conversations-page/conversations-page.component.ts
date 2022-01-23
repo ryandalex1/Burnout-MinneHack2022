@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef} from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ConversationsService } from 'src/app/service/conversations/conversations.service';
+import {FormControl} from '@angular/forms';
+import {ConversationsService} from 'src/app/service/conversations/conversations.service';
 import {filter} from "rxjs";
 
 export interface TextMessage {
@@ -40,7 +40,10 @@ export class ConversationsPageComponent implements OnInit {
     conversations.recievedMessageOn.pipe(
       filter((s) => s == this.recipient)
     ).subscribe(() => {
-      document.querySelector("#scrollToBottom")!.scrollIntoView();
+      setTimeout(() => {
+          document.querySelector("#scrollToBottom")!.scrollIntoView();
+        }, 100
+      );
     })
   }
 
@@ -52,7 +55,10 @@ export class ConversationsPageComponent implements OnInit {
     }
     this.textMessages = maybeMessages
     console.log(this.textMessages);
-    document.querySelector("#scrollToBottom")!.scrollIntoView();
+    setTimeout(() => {
+        document.querySelector("#scrollToBottom")!.scrollIntoView();
+      }, 100
+    );
   }
 
   sendMessageOnEnter(event: Event): boolean {
@@ -81,7 +87,7 @@ export class ConversationsPageComponent implements OnInit {
       this.messageToSend = "";
 
       setTimeout(() => {
-        document.querySelector("#scrollToBottom")!.scrollIntoView();
+          document.querySelector("#scrollToBottom")!.scrollIntoView();
         }, 100
       );
     }
