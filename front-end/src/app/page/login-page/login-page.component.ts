@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import { ConversationsService } from 'src/app/service/conversations/conversations.service';
 
 @Component({
   selector: 'app-login-page',
@@ -8,17 +9,21 @@ import {Router} from "@angular/router";
 })
 export class LoginPageComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private conversations: ConversationsService) { }
 
   ngOnInit(): void { }
 
-  enterCode(code: string) {
+  async enterCode(code: string) {
     console.log(code);
+    // TODO: error handling
+    await this.conversations.useExistingCode(code);
     this.router.navigate(['chat']);
   }
 
   createNewSession() {
     console.log("New Session");
+    // TODO: error handling
+    await this.conversations.getNewPhoneNum();
     this.router.navigate(['chat']);
   }
 }

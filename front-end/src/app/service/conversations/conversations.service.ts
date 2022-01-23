@@ -99,7 +99,7 @@ export class ConversationsService {
     }
 
     // TODO: update based on what ryan sets the field names to
-    this.#wsConnection.next({ msgRecipient, msgContent })
+    this.#wsConnection.next({ msgRecipient, msgContent } as any as BackendMessage)
   }
 
 }
