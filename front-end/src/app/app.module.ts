@@ -4,6 +4,8 @@ import { MatCardModule } from '@angular/material/card'
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button'
 import { MatInputModule } from "@angular/material/input";
+import { MatRippleModule } from "@angular/material/core";
+import { MatDividerModule } from "@angular/material/divider";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +18,8 @@ import {SidebarComponent} from "./component/sidebar/sidebar.component";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import { ContactComponent } from './component/contact/contact.component';
+import { CloseBurnerDialogComponent } from './dialog/close-burner-dialog/close-burner-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -24,7 +28,8 @@ import { ContactComponent } from './component/contact/contact.component';
     ConversationsPageComponent,
     LoginPageComponent,
     SidebarComponent,
-    ContactComponent
+    ContactComponent,
+    CloseBurnerDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +41,10 @@ import { ContactComponent } from './component/contact/contact.component';
     MatButtonModule,
     FormsModule,
     MatSidenavModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatRippleModule,
+    MatDividerModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

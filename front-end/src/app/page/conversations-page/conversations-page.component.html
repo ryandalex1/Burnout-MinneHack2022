@@ -1,10 +1,12 @@
 <app-sidebar>
-  <div class="container">
-    <div class="messages" style="overflow: scroll">
+  <h1 header class="name">(555) 555-5555</h1>
+  <div body class="container">
+    <div class="messages">
       <ng-container *ngFor="let message of textMessages">
         <ng-container [ngTemplateOutlet]="msgTemplate" [ngTemplateOutletContext]="{message: message}">
         </ng-container>
       </ng-container>
+      <span id="scrollToBottom"></span>
     </div>
     <div class="textbox-area">
       <mat-form-field appearance="outline" floatLabel="never">
@@ -16,14 +18,14 @@
       </button>
     </div>
   </div>
-
-  <ng-template #msgTemplate let-message='message'>
-    <div class="card-wrapper">
-      <div class="side-padding" *ngIf="message.from == 'US'"></div>
-      <mat-card class="message-contents">
-        <span>{{message.contents}}</span>
-      </mat-card>
-      <div class="side-padding" *ngIf="message.from == 'THEM'"></div>
-    </div>
-  </ng-template>
 </app-sidebar>
+
+<ng-template #msgTemplate let-message='message'>
+  <div class="card-wrapper">
+    <div class="side-padding" *ngIf="message.from == 'US'"></div>
+    <mat-card class="message-contents">
+      {{message.contents}}
+    </mat-card>
+    <div class="side-padding" *ngIf="message.from == 'THEM'"></div>
+  </div>
+</ng-template>

@@ -6,3 +6,22 @@
     margin-left: auto;
   }
 }
+
+.wide {
+  width: 100%;
+}
+
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.info {
+  padding: 12px;
+}
+
+.hamburger {
+  z-index: 10;
+}
