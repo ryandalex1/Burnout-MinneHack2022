@@ -12,13 +12,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginPageComponent } from './page/login-page/login-page.component';
 import { ConversationsPageComponent } from './page/conversations-page/conversations-page.component';
 import { FormsModule } from '@angular/forms';
+import {SidebarComponent} from "./component/sidebar/sidebar.component";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ConversationsPageComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +32,9 @@ import { FormsModule } from '@angular/forms';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    FormsModule
+    FormsModule,
+    MatSidenavModule,
+    MatToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
