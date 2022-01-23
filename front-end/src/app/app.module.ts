@@ -4,6 +4,8 @@ import { MatCardModule } from '@angular/material/card'
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button'
 import { MatInputModule } from "@angular/material/input";
+import { MatRippleModule } from "@angular/material/core";
+import { MatDividerModule } from "@angular/material/divider";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -36,7 +38,9 @@ import { ContactComponent } from './component/contact/contact.component';
     MatButtonModule,
     FormsModule,
     MatSidenavModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatRippleModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

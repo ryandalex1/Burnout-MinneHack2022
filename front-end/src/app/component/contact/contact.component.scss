@@ -1,8 +1,17 @@
 .container {
-  width: 300px;
+  padding: 12px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
 
-  border: 1px solid #969696;
+.icon {
+  padding: 6px;
+  font-size: 36px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
