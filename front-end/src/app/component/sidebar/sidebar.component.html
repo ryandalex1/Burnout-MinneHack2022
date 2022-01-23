@@ -15,7 +15,7 @@
     </div>
 
     <div class="info">
-      <h2>Your Messages:</h2>
+      <h2>Your Messages</h2>
     </div>
 
     <mat-divider></mat-divider>
@@ -27,11 +27,11 @@
     <mat-divider></mat-divider>
     <div class="info">
       <div class="wide centered">
-        <button mat-flat-button color="primary">
+        <button mat-flat-button color="primary" (click)="newConvDialog()">
           <mat-icon>add</mat-icon> Add Conversation
         </button>
         <span style="height: 10px"></span>
-        <button mat-flat-button color="warn" (click)="openDialog()">
+        <button mat-flat-button color="warn" (click)="closeBurnerDialog()">
           <mat-icon>close</mat-icon> Close Burner
         </button>
       </div>
