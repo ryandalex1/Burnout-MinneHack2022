@@ -58,7 +58,11 @@ export class ConversationsPageComponent implements OnInit {
         timestamp: Date.now()
       });
       this.messageToSend = "";
+
+      setTimeout(() => {
+        document.querySelector("#scrollToBottom")!.scrollIntoView();
+        }, 100
+      );
     }
   }
-
 }

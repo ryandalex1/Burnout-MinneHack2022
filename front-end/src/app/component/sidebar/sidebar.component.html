@@ -30,7 +30,8 @@
         <button mat-flat-button color="primary">
           <mat-icon>add</mat-icon> Add Conversation
         </button>
-        <button mat-flat-button color="warn">
+        <span style="height: 10px"></span>
+        <button mat-flat-button color="warn" (click)="openDialog()">
           <mat-icon>close</mat-icon> Close Burner
         </button>
       </div>
@@ -39,7 +40,7 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button mat-icon-button color="primary" (click)="sidenav.toggle()">
+      <button mat-icon-button color="primary" class="hamburger" (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
       <ng-content select="[header]"></ng-content>
