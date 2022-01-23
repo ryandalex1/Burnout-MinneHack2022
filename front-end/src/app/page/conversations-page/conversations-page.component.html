@@ -1,21 +1,23 @@
-<div class="container">
+<app-sidebar>
+  <div class="container">
     <h1 class="name">(555) 555-5555</h1>
     <div class="messages">
-        <ng-container *ngFor="let message of textMessages">
-            <ng-container [ngTemplateOutlet]="msgTemplate" [ngTemplateOutletContext]="{message: message}"></ng-container>
-        </ng-container>
+      <ng-container *ngFor="let message of textMessages">
+        <ng-container [ngTemplateOutlet]="msgTemplate" [ngTemplateOutletContext]="{message: message}"></ng-container>
+      </ng-container>
     </div>
     <div class="textbox">
-        <textarea name="" id="" cols="30" rows="10"></textarea>
+      <textarea name="" id="" cols="30" rows="10"></textarea>
     </div>
-</div>
+  </div>
 
-<ng-template #msgTemplate let-message='message'>
+  <ng-template #msgTemplate let-message='message'>
     <div class="card-wrapper">
-        <div class="side-padding" *ngIf="message.from == 'US'"></div>
-        <mat-card>
-            {{message.contents}}
-        </mat-card>
-        <div class="side-padding" *ngIf="message.from == 'THEM'"></div>
+      <div class="side-padding" *ngIf="message.from == 'US'"></div>
+      <mat-card>
+        {{message.contents}}
+      </mat-card>
+      <div class="side-padding" *ngIf="message.from == 'THEM'"></div>
     </div>
-</ng-template>
+  </ng-template>
+</app-sidebar>

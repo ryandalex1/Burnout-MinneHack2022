@@ -1,0 +1,28 @@
+<mat-sidenav-container class="page-container">
+  <mat-sidenav #sidenav mode="over">
+    <mat-toolbar color="accent">
+      <span style="width: 250px"></span>
+      <button mat-mini-fab color="primary" (click)="sidenav.toggle()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </mat-toolbar>
+    <h2>Your Information:</h2>
+
+    <p>Your Phone Number: <b>(555) 555-5555</b></p>
+    <p>Your Code: <b>C34ADdJ</b></p>
+    <p>Expiring in <b>13</b> min</p>
+
+    <h2>Your Messages:</h2>
+
+    <p>msgs here</p>
+
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="warn">
+      <button mat-mini-fab color="primary" (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>
