@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:8000"
+  apiUrl: "https://burnout-backend-qwqi2iy3qa-uc.a.run.app"
 };
 
 /*

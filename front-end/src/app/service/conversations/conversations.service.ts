@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { WebSocketSubject } from 'rxjs/webSocket';
 import { BackendService, CodeDetails, BackendMessage } from '../backend/backend.service';
-import {Subject} from "rxjs";
+import { Subject } from "rxjs";
 
 export interface Message {
   // the phone number of the person we are texting with
@@ -31,38 +31,40 @@ export class ConversationsService {
     return undefined
   }
 
-  constructor(private backend: BackendService) { }
+  constructor(private backend: BackendService) { 
+    this.#codeDetails = this.loadCodeDetails();
+  }
 
   private recvMessage = (val: BackendMessage) => {
-        let msg: Message;
-        if (val.sent_from === this.#codeDetails?.nextNumber) {
-          msg = {
-            content: val.message_text,
-            timestamp: new Date(), // pretend the message was sent now
-            with: val.sent_to,
-            writtenBy: "US"
-          }
-        } else if (val.sent_to === this.#codeDetails?.nextNumber) {
-          msg = {
-            content: val.message_text,
-            timestamp: new Date(),
-            with: val.sent_from,
-            writtenBy: "THEM"
-          }
-        } else {
-          console.error(val);
-          throw new Error("recieved a message that was neither from us nor for us??");
-        }
+    let msg: Message;
+    if (val.sent_from === this.#codeDetails?.nextNumber) {
+      msg = {
+        content: val.message_text,
+        timestamp: new Date(), // pretend the message was sent now
+        with: val.sent_to,
+        writtenBy: "US"
+      }
+    } else if (val.sent_to === this.#codeDetails?.nextNumber) {
+      msg = {
+        content: val.message_text,
+        timestamp: new Date(),
+        with: val.sent_from,
+        writtenBy: "THEM"
+      }
+    } else {
+      console.error(val);
+      throw new Error("recieved a message that was neither from us nor for us??");
+    }
 
-        this.recievedMessageOn.next(msg.with);
+    this.recievedMessageOn.next(msg.with);
 
-        const mapEntry = this.messages.get(msg.with);
-        if (mapEntry) {
-          mapEntry.push(msg);
-        } else {
-          this.messages.set(msg.with, [msg]);
-        }
-      };
+    const mapEntry = this.messages.get(msg.with);
+    if (mapEntry) {
+      mapEntry.push(msg);
+    } else {
+      this.messages.set(msg.with, [msg]);
+    }
+  };
 
   private async initWsConnection() {
     if (this.#codeDetails == null) {
@@ -76,14 +78,41 @@ export class ConversationsService {
     });
   }
 
+  private saveCodeToLocalStorage() {
+    localStorage.setItem("code", JSON.stringify(this.#codeDetails));
+  }
+
+  private loadCodeDetails(): CodeDetails | undefined {
+    const maybeCode = localStorage.getItem("code");
+    if (maybeCode) {
+      const codeDetails: {
+        accessCode: string
+        nextNumber: string
+        validUntil: string
+      } = JSON.parse(maybeCode)
+      const validUntilDate: Date = new Date(codeDetails.validUntil);
+      if (Date.now() <= validUntilDate.valueOf()) {
+        return {
+          accessCode: codeDetails.accessCode,
+          nextNumber: codeDetails.nextNumber,
+          validUntil: validUntilDate
+        }
+      }
+    }
+
+    return undefined;
+  }
+
   public async getNewPhoneNum() {
     this.#codeDetails = await this.backend.getNewCode();
+    this.saveCodeToLocalStorage();
     await this.initWsConnection();
   }
 
   public async useExistingCode(code: string) {
     const { messages, ...codeDetails } = await this.backend.useExistingCode(code)
     this.#codeDetails = codeDetails;
+    this.saveCodeToLocalStorage();
 
     for (const message of messages) {
       this.recvMessage(message)
@@ -96,7 +125,9 @@ export class ConversationsService {
     if (this.#codeDetails == null) {
       throw new Error("trying to end session, but we are already unauthenticated")
     }
+    localStorage.removeItem("code");
     this.backend.endSession(this.#codeDetails.accessCode);
+    this.#codeDetails = undefined;
   }
 
   public async sendMessage(msgRecipient: string, msgContent: string) {
