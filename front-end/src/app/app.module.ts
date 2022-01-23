@@ -18,6 +18,7 @@ import {SidebarComponent} from "./component/sidebar/sidebar.component";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import { ContactComponent } from './component/contact/contact.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { ContactComponent } from './component/contact/contact.component';
     MatSidenavModule,
     MatToolbarModule,
     MatRippleModule,
-    MatDividerModule
+    MatDividerModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
