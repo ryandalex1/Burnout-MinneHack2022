@@ -5,39 +5,42 @@
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .textbox {
-    width: 100%;
+  width: 100%;
 }
 
 .textbox-area {
-    margin-top: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  //margin-top: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  position: absolute;
+  bottom: 10px;
 }
 
 .messages {
-    width: 100%
+  width: 100%;
+  height: calc(100vh - 150px);
 }
 
 .card-wrapper {
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  justify-content: space-between;
 }
 
 .side-padding {
-    width: 25vw
+  width: 25vw
 }
 
 .message-contents {
-    white-space: pre;
+
 }

@@ -1,7 +1,6 @@
 <app-sidebar>
   <div class="container">
-    <h1 class="name">(555) 555-5555</h1>
-    <div class="messages">
+    <div class="messages" style="overflow: scroll">
       <ng-container *ngFor="let message of textMessages">
         <ng-container [ngTemplateOutlet]="msgTemplate" [ngTemplateOutletContext]="{message: message}">
         </ng-container>
@@ -22,7 +21,7 @@
     <div class="card-wrapper">
       <div class="side-padding" *ngIf="message.from == 'US'"></div>
       <mat-card class="message-contents">
-        {{message.contents}}
+        <span>{{message.contents}}</span>
       </mat-card>
       <div class="side-padding" *ngIf="message.from == 'THEM'"></div>
     </div>
