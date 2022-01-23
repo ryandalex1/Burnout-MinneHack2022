@@ -4,6 +4,7 @@ from fastapi.responses import HTMLResponse
 from twilio.request_validator import RequestValidator
 from twilio.rest import Client
 
+import os
 import uvicorn
 
 import asyncio
@@ -17,8 +18,8 @@ from .util import *
 
 SESSION_LENGTH_MINUTES = 5
 
-account_sid = "sid"
-auth_token = "token"
+account_sid = os.environ["BURNOUT_TWILIO_ACCOUNT_SID"]
+auth_token = os.environ["BURNOUT_TWILIO_AUTH_TOKEN"]
 
 all_phone_numbers = ["+16204729736", "+19525229522", "+16124533184", "+16514101883", "+18055905233"]
 available_phone_numbers = []

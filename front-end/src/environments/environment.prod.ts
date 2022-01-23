@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: undefined
+  apiUrl: "https://burnout-backend-qwqi2iy3qa-uc.a.run.app"
 };
