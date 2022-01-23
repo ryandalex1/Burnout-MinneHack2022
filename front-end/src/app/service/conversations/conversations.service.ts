@@ -20,7 +20,6 @@ export class ConversationsService {
   #codeDetails?: CodeDetails;
   #wsConnection?: WebSocketSubject<BackendMessage>;
 
-  // TODO: should this be a behaviorsubject?
   public messages: Map<string, Message[]> = new Map();
   public recievedMessageOn: Subject<string> = new Subject<string>();
 
@@ -33,6 +32,9 @@ export class ConversationsService {
 
   constructor(private backend: BackendService) { 
     this.#codeDetails = this.loadCodeDetails();
+    if (this.#codeDetails) {
+      this.useExistingCode(this.#codeDetails.accessCode);
+    }
   }
 
   private recvMessage = (val: BackendMessage) => {

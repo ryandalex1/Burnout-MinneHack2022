@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { MediaChange, MediaObserver} from '@angular/flex-layout';
 import {map, scan, Subject, Subscription, takeUntil, takeWhile, timer} from "rxjs";
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
@@ -12,6 +12,8 @@ import {ConversationsService} from "../../service/conversations/conversations.se
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
+
+  @Output() recipientOut: EventEmitter<string> = new EventEmitter();
 
   phoneNumber: string = "";
   code: string = "";
@@ -34,8 +36,17 @@ export class SidebarComponent implements OnInit {
     });
   }
 
+  get contacts() : string[] {
+    return [...this.conversations.messages.keys()]
+  }
+
   closeBurnerDialog() {
     this.dialog.open(CloseBurnerDialogComponent);
+  }
+
+  setActiveRecipient(phoneNumber: string) {
+    this.recipientOut.emit(phoneNumber);
+    this.opened = false;
   }
 
   newConvDialog() {

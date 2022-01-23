@@ -18,13 +18,12 @@
       <h2>Your Messages</h2>
     </div>
 
-    <mat-divider></mat-divider>
-    <app-contact></app-contact>
-    <mat-divider></mat-divider>
-    <app-contact></app-contact>
-    <mat-divider></mat-divider>
-    <app-contact></app-contact>
-    <mat-divider></mat-divider>
+    <ng-container *ngFor="let contact of contacts">
+      <mat-divider></mat-divider>
+      <app-contact [phoneNumber]="contact" (click)="setActiveRecipient(contact)"></app-contact>
+    </ng-container>
+    <div class="info" *ngIf="contacts.length == 0">Add a new contact or recieve a text to get started!</div>
+  
     <div class="info">
       <div class="wide centered">
         <button mat-flat-button color="primary" (click)="newConvDialog()">

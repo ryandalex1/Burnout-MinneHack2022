@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
+import { ConversationsService } from 'src/app/service/conversations/conversations.service';
 
 @Component({
   selector: 'app-new-conversation-dialog',
@@ -8,10 +9,11 @@ import {MatDialogRef} from "@angular/material/dialog";
 })
 export class NewConversationDialogComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<NewConversationDialogComponent>) { }
+  constructor(private dialogRef: MatDialogRef<NewConversationDialogComponent>, private convo: ConversationsService) { }
 
   closeDialog(result: string) {
-    this.dialogRef.close(result)
+    this.convo.messages.set(result, []);
+    this.dialogRef.close(result);
   }
 
   ngOnInit(): void { }

@@ -23,41 +23,6 @@ auth_token = os.environ["BURNOUT_TWILIO_AUTH_TOKEN"]
 
 all_phone_numbers = ["+16204729736", "+19525229522", "+16124533184", "+16514101883", "+18055905233"]
 available_phone_numbers = []
-
-html = """
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Chat</title>
-    </head>
-    <body>
-        <h1>Burnout</h1>
-        <ul id='messages'>
-        </ul>
-        <form action="" onsubmit="sendMessage(event)">
-            <input type="text" id="messageText" autocomplete="off"/>
-            <button>Send</button>
-        </form>
-        <script>
-            var ws = new WebSocket("ws://localhost:8000/ws");
-            ws.onmessage = function(event) {
-                var messages = document.getElementById('messages')
-                var message = document.createElement('li')
-                var content = document.createTextNode(event.data)
-                message.appendChild(content)
-                messages.appendChild(message)
-            };
-            function sendMessage(event) {
-                var input = document.getElementById("messageText")
-                ws.send(input.value)
-                input.value = ''
-                event.preventDefault()
-            }
-        </script>
-    </body>
-</html>
-"""
-
 origins = [ "*" ]
 
 # TODO use alembic maybe idk
@@ -92,7 +57,7 @@ async def startup_event():
 
 @app.get("/")
 async def root():
-    return HTMLResponse(html)
+    return { "healthy": True }
 
 
 @app.post("/create-session/")

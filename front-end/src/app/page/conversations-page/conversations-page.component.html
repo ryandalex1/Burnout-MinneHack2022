@@ -1,4 +1,4 @@
-<app-sidebar>
+<app-sidebar (recipientOut)="updateRecipient($event)">
   <h1 header class="name">{{recipient}}</h1>
   <div body class="container">
     <div class="messages">
@@ -8,7 +8,10 @@
       </ng-container>
       <span id="scrollToBottom"></span>
     </div>
-    <div class="textbox-area">
+    <div class="padding" *ngIf="recipient == ''">
+      Open the sidebar to start or view a conversation!
+    </div>
+    <div class="textbox-area" *ngIf="recipient != ''">
       <mat-form-field appearance="outline" floatLabel="never">
         <textarea [(ngModel)]="messageToSend" matInput rows="1" (keypress)="sendMessageOnEnter($event)"></textarea>
         <mat-label></mat-label>

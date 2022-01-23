@@ -17,7 +17,7 @@ export interface TextMessage {
 })
 export class ConversationsPageComponent implements OnInit {
 
-  @Input() recipient: string = "+19524657824";
+  @Input() recipient: string = "";
 
   messageToSend: string = "";
 
@@ -51,7 +51,9 @@ export class ConversationsPageComponent implements OnInit {
     let maybeMessages = this.conversations.messages.get(this.recipient);
     if (maybeMessages == null) {
       maybeMessages = []
-      this.conversations.messages.set(this.recipient, maybeMessages);
+      if (this.recipient != "") {
+        this.conversations.messages.set(this.recipient, maybeMessages);
+      }
     }
     this.textMessages = maybeMessages
     console.log(this.textMessages);
@@ -74,6 +76,11 @@ export class ConversationsPageComponent implements OnInit {
       }
     }
     return true;
+  }
+
+  updateRecipient(recipient: string) {
+    this.recipient = recipient;
+    this.textMessages = this.conversations.messages.get(recipient)!;
   }
 
   sendMessage(): void {
