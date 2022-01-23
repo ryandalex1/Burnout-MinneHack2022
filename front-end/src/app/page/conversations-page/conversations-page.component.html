@@ -8,7 +8,7 @@
       </ng-container>
     </div>
     <div class="textbox-area">
-      <mat-form-field appearance="fill" floatLabel="never">
+      <mat-form-field appearance="outline" floatLabel="never">
         <textarea [(ngModel)]="messageToSend" matInput rows="1" (keypress)="sendMessageOnEnter($event)"></textarea>
         <mat-label></mat-label>
       </mat-form-field>
