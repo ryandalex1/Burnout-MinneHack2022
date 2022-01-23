@@ -20,6 +20,7 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import { ContactComponent } from './component/contact/contact.component';
 import { CloseBurnerDialogComponent } from './dialog/close-burner-dialog/close-burner-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatToolbarModule,
     MatRippleModule,
     MatDividerModule,
-    MatDialogModule
+    MatDialogModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

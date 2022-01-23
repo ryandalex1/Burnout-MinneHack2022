@@ -1,5 +1,6 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ConversationsService } from 'src/app/service/conversations/conversations.service';
 
 export interface TextMessage {
   from: "US" | "THEM"
@@ -14,6 +15,8 @@ export interface TextMessage {
   styleUrls: ['./conversations-page.component.scss']
 })
 export class ConversationsPageComponent implements OnInit {
+
+  @Input() recipient!: string = "(555) 555-5555";
 
   messageToSend: string = "";
 
@@ -31,7 +34,7 @@ export class ConversationsPageComponent implements OnInit {
 
   ]
 
-  constructor() { }
+  constructor(private conversations: ConversationsService) { }
 
   ngOnInit(): void {
   }
@@ -57,6 +60,7 @@ export class ConversationsPageComponent implements OnInit {
         contents: this.messageToSend,
         timestamp: Date.now()
       });
+      this.conversations.sendMessage(this.recipient, this.messageToSend);
       this.messageToSend = "";
 
       setTimeout(() => {
