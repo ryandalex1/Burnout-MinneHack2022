@@ -1,4 +1,4 @@
-![img](https://i.imgur.com/GQJRhe9.png)
+<img src="https://i.imgur.com/NciLpig.png" alt="drawing" width="200"/>
 
 # Burnout
 
