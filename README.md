@@ -1,3 +1,5 @@
+![img](https://i.imgur.com/GQJRhe9.png)
+
 # Burnout
 
 This project was created in 24 hours for the MinneHack2022 Hackathon on January 22nd and 23rd 2022.
