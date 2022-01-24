@@ -2,7 +2,7 @@
 
 This project was created in 24 hours for the MinneHack2022 Hackathon on January 22nd and 23rd 2022.
 
-![Imgur](https://imgur.com/XeVIqZ9)
+![Imgur](https://i.imgur.com/XeVIqZ9.png)
 
 Burnout won 2nd place overall and won a prize for the most creative use of Twilio.
 
