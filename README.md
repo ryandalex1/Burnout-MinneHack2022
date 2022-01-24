@@ -37,18 +37,22 @@ We ran into a lot of different issues making this work. Although the Twilio API 
 The problem was that we must use webhooks to receive texts that are sent to a Twilio number. This was problematic because there is not a way to get Twilio to send requests to your computer directly. The solution was to use Ngrok -- a service that allows requests to a URL to be redirected to localhost.
 
 ## Accomplishments that we're proud of
-1: Creating Our Presentation Video and learning how to use Design and Editing Software
+1. Creating Our Presentation Video and learning how to use Design and Editing Software
 
-2: Getting the Twilio API message to show up on the website in real-time, live on the Front-End using WebSockets 
+2. Getting the Twilio API message to show up on the website in real-time, live on the Front-End using WebSockets 
 
-3: Using Google Cloud Run for the first time and getting the website hosted
+3. Using Google Cloud Run for the first time and getting the website hosted
 
 ## What we learned
-In general, We learned how to use a number of APIs to create a usable website within the time limit including the ones following: 1:Angular - Angular essentially allowed for the creation of a quick and efficient user interface, which is necessary when dealing with real-time events like text messages 2: Twilio API -Twilio API sits at the core of our Project, allowing us to have web-based phone numbers integrated into our website. Through the usage of Twilio, we were able to integrate the phone interactions into the Back-End and 3: Sequel Alchemy -Sequel Alchemy is used to store session information, including temporarily storing text messages: Sequel Alchemy allowed for us to save user information between sessions with a given user code 4: Fast API - Fast API was crucial in creating efficient software and for reducing the lag that the user may experience 5: WebSockets - WebSockets allows us to update the Front-End display with texts and information from the server in real-time Websockets interacts with the Twilio API and allows for the Back- End to update the display on the Front-End with texts and time remaining
+We learned how to create a usable API that was able to tie together other APIs to create a usable website within the time limit. We worked with the following technologies:
+
+1. Angular - We already had experience with Angular, but it allowed for the quick and efficient creation of a user interface that looked good by implementing Material Design
+
+2. FastAPI - None of us had a lot of experience with FastAPI but we did have experience with Python. This project gave us a chance to learn FastAPI and actually deploy it alongside a usable frontend. It was not too bad to get up and running with some basic routes but we learned a lot connecting it to the front end via WebSockets and working with some of the async functions and operations.
+
+3. PostgreSQL - We had worked with PostgreSQL, but had not used SQLAlchemy and Pydantic to connect it with Python before. We also were able to work with Docker to run our development database easily.
+
+4. Twilio API - The Twilio API sits at the core of Burnout, allowing us to have usable phone numbers integrated into our website. Using Twilio, we were able to integrate the phone conversations into the browser in real time
 
 ## What's next for Burnout
-With more time and energy, the main area of expansion would be to purchase a number of new phone numbers, as the current data formats and programs used are able to scale effectively
-
-
-## Try it out
-burnout-frontend-qwqi2iy3qa-uc.a.run.app
+This project is not under active development post-hackathon.
