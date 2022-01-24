@@ -8,6 +8,8 @@ Burnout won 2nd place overall and won a prize for the most creative use of Twili
 
 [Demo Video Presentation](https://www.youtube.com/watch?v=dG6ecFNn-Ak)
 
+[DevPost Page](https://devpost.com/software/burnout-8q0ula)
+
 [Live Link](https://burnout-frontend-qwqi2iy3qa-uc.a.run.app) (Probably not working when you click on this)
 
 ## Inspiration
