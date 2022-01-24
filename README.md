@@ -4,6 +4,7 @@
 
 This project was created in 24 hours for the MinneHack2022 Hackathon on January 22nd and 23rd 2022.
 
+
 ![Imgur](https://i.imgur.com/XeVIqZ9.png)
 
 Burnout won 2nd place overall and won a prize for the most creative use of Twilio.
@@ -13,6 +14,10 @@ Burnout won 2nd place overall and won a prize for the most creative use of Twili
 [DevPost Page](https://devpost.com/software/burnout-8q0ula)
 
 [Live Link](https://burnout-frontend-qwqi2iy3qa-uc.a.run.app) (Probably not working when you click on this)
+
+<p align="center">
+<img src="https://i.imgur.com/0kmaX44.png" alt="drawing" width="800"/>
+  </p>
 
 ## Inspiration
 Whether it is a Craigslist seller or a website that needs you to verify with a one-time code, oftentimes we are forced to give up our anonymity online and sacrifice our digital privacy by giving out our real phone number. Existing solutions are either prohibitively expensive or hard to make work. Burnout makes temporary phone number anonymity accessible to everyone with the single click of a button in your browser.
